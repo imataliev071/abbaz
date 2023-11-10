@@ -15,17 +15,14 @@
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 import asyncio
-import logging
-from pathlib import Path
-import os
-import random
-
-from aiogram.filters import Command
-
 from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+import logging
+from dotenv import load_dotenv
+from os import getenv
 
-BOT_TOKEN = '6964674656:AAGyGyVIu95F7YO-0V5_pCFoXd8xIpqCSQY'
-bot = Bot(token=BOT_TOKEN)
+load_dotenv()
+bot = Bot(token=getenv('BOT_TOKEN'))
 dp = Dispatcher()
 
 
@@ -35,13 +32,13 @@ async def start(message: types.Message):
     await message.answer(f'Здравствуйте {message.from_user.first_name}')
 
 
-@dp.message(Command('myinfo'))
+@dp.message(Command('myinfo'))  # фильтр
 async def myinfo(message: types.Message):
     await message.answer(
         f'Ваш id: {message.from_user.id} \nВаше имя: {message.from_user.first_name} \nВаш user name: {message.from_user.username}')
 
 
-@dp.message(Command('picture'))
+@dp.message(Command('picture'))  # фильтр
 async def picture(message: types.Message):
     file = types.FSInputFile('image/wallpaperbetter.com_3840x2160.jpg')
     await message.answer_photo(photo=file)
