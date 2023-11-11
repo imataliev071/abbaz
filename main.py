@@ -20,6 +20,8 @@ from aiogram.filters import Command
 import logging
 from dotenv import load_dotenv
 from os import getenv
+from pathlib import Path
+from random import choice
 
 load_dotenv()
 bot = Bot(token=getenv('BOT_TOKEN'))
@@ -38,9 +40,16 @@ async def myinfo(message: types.Message):
         f'Ваш id: {message.from_user.id} \nВаше имя: {message.from_user.first_name} \nВаш user name: {message.from_user.username}')
 
 
+list = []
+
+img = Path('image')
+for i in img.iterdir():
+    list.append(i)
+
+
 @dp.message(Command('picture'))  # фильтр
-async def picture(message: types.Message):
-    file = types.FSInputFile('image/wallpaperbetter.com_3840x2160.jpg')
+async def pic(message: types.Message):
+    file = types.FSInputFile(choice(list))
     await message.answer_photo(photo=file)
 
 
