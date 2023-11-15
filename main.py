@@ -1,68 +1,36 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-# def print_hi(name):
-# Use a breakpoint in the code line below to debug your script.
-#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-# if __name__ == '__main__':
-#     print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+from aiogram.types import BotCommand
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
 import logging
 from dotenv import load_dotenv
 from os import getenv
-from pathlib import Path
-from random import choice
+from hendlers import (
+    stat_router,
+    echo_router,
+    myinfo_ruter,
+    picture_router,
+    shop_router,
+    questions_router
+)
 
 load_dotenv()
 bot = Bot(token=getenv('BOT_TOKEN'))
 dp = Dispatcher()
 
 
-@dp.message(Command('start'))  # фильтр
-async def start(message: types.Message):
-    # await message.reply('hello')
-    await message.answer(f'Здравствуйте {message.from_user.first_name}')
-
-
-@dp.message(Command('myinfo'))  # фильтр
-async def myinfo(message: types.Message):
-    await message.answer(
-        f'Ваш id: {message.from_user.id} \nВаше имя: {message.from_user.first_name} \nВаш user name: {message.from_user.username}')
-
-
-list = []
-
-img = Path('image')
-for i in img.iterdir():
-    list.append(i)
-
-
-@dp.message(Command('picture'))  # фильтр
-async def pic(message: types.Message):
-    file = types.FSInputFile(choice(list))
-    await message.answer_photo(photo=file)
-
-
-@dp.message()  # декоратор
-async def echo(message: types.Message):  # обрабодчик
-    # await message.reply(message.text)  # ответ тем же с показом вопроса
-    # await message.answer('hi') #ответ
-    await message.answer(message.text)  # ответ сообщением
-    # print(message)
-    # print(message.text)
-
-
 async def main():
+    await bot.set_my_commands([
+        BotCommand(command='start', description='Старт'),
+        BotCommand(command='picture', description='Случайная кртинка'),
+        BotCommand(command='myinfo', description='Информация об о мне'),
+        BotCommand(command='shop', description='Магазин')
+    ])
+    dp.include_router(questions_router)
+    dp.include_router(stat_router)
+    dp.include_router(shop_router)
+    dp.include_router(myinfo_ruter)
+    dp.include_router(picture_router)
+    dp.include_router(echo_router)
     await dp.start_polling(bot)
 
 
