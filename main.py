@@ -23,7 +23,8 @@ async def main():
         BotCommand(command='start', description='Старт'),
         BotCommand(command='picture', description='Случайная кртинка'),
         BotCommand(command='myinfo', description='Информация об о мне'),
-        BotCommand(command='shop', description='Магазин')
+        BotCommand(command='shop', description='Магазин'),
+        BotCommand(command='quest', description='Опрос')
     ])
     dp.include_router(questions_router)
     dp.include_router(stat_router)
