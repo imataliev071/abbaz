@@ -1,5 +1,6 @@
 import sqlite3
 from pathlib import Path
+from pprint import pprint
 
 
 def init_db():
@@ -9,11 +10,11 @@ def init_db():
 
 
 def create_tables():
-    # cursor.execute(
-    #     '''
-    #     DROP TABLE IF EXISTS
-    #     '''
-    # )
+    cursor.execute(
+        '''
+        DROP TABLE IF EXISTS products
+        '''
+    )
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS products (
@@ -26,15 +27,19 @@ def create_tables():
     )
     db.commit()
 
+
 def populate_tables():
     cursor.execute(
         '''
         INSERT INTO products (name, price, image) VALUES 
-        ('Роббинзон Крузо', 10.00, 'link'),
-        ('Ромео и Джулиетта', 9.00, 'link')
+        ('Тайота Супра МК-4 белый', 20000, 'image/wallpaperbetter.com_3840x2160.jpg'),
+        ('Тайота Супра МК-4 черный', 23000, 'image/wallpaperbetter.com_3840x2160.jpg')
+        ('Тайота Супра МК-4 красный', 19000, 'image.supra_red.jpg')
         '''
 
     )
+    db.commit()
+
 
 def get_products():
     cursor.execute(
@@ -42,7 +47,7 @@ def get_products():
         SELECT * FROM products
         '''
     )
-    print(cursor.fetchall())
+    return cursor.fetchall()
 
 
 if __name__ == '__main__':
@@ -50,3 +55,4 @@ if __name__ == '__main__':
     create_tables()
     populate_tables()
     get_products()
+    pprint(get_products())
