@@ -10,8 +10,17 @@ from hendlers import (
     myinfo_ruter,
     picture_router,
     shop_router,
-    questions_router
+    questions_router,
+    car_router
 )
+from db.queries import init_db, create_tables, populate_tables
+
+
+async def on_startup(dispatcher):
+    init_db()
+    create_tables()
+    populate_tables()
+
 
 load_dotenv()
 bot = Bot(token=getenv('BOT_TOKEN'))
@@ -24,13 +33,16 @@ async def main():
         BotCommand(command='picture', description='Случайная кртинка'),
         BotCommand(command='myinfo', description='Информация об о мне'),
         BotCommand(command='shop', description='Магазин'),
-        BotCommand(command='quest', description='Опрос')
+        BotCommand(command='quest', description='Опрос'),
+        BotCommand(command='get', description='машины')
     ])
+    dp.include_router(car_router)
     dp.include_router(questions_router)
     dp.include_router(stat_router)
     dp.include_router(shop_router)
     dp.include_router(myinfo_ruter)
     dp.include_router(picture_router)
+    dp.startup.register(on_startup)
     dp.include_router(echo_router)
     await dp.start_polling(bot)
 

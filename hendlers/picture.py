@@ -16,3 +16,4 @@ for i in img.iterdir():
 async def pic(message: types.Message):
     file = types.FSInputFile(choice(list))
     await message.answer_photo(photo=file)
+    print(file)

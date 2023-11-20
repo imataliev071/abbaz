@@ -32,9 +32,9 @@ def populate_tables():
     cursor.execute(
         '''
         INSERT INTO products (name, price, image) VALUES 
-        ('Тайота Супра МК-4 белый', 20000, 'image/wallpaperbetter.com_3840x2160.jpg'),
-        ('Тайота Супра МК-4 черный', 23000, 'image/wallpaperbetter.com_3840x2160.jpg')
-        ('Тайота Супра МК-4 красный', 19000, 'image.supra_red.jpg')
+        ('Тайота Супра МК-4 белый', 20000, 'image/supra_white.jpg'),
+        ('Тайота Супра МК-4 черный', 23000, 'image/supra_black.jpg'),
+        ('Тайота Супра МК-4 красный', 29000, 'image/supra_red.jpg')
         '''
 
     )
