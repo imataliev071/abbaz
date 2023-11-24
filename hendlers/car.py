@@ -33,4 +33,4 @@ async def get_cars(call: types.CallbackQuery):
     for car in queries.get_products(int(id)):
         file = types.FSInputFile(car[3])
         await bot.send_photo(chat_id=call.message.chat.id, photo=file, caption=(f'Марка: {car[1]} \n \n '
-                                                    f'Цена: {car[2]}'))
+                                                                                f'Цена: {car[2]}'))
