@@ -1,9 +1,6 @@
 from aiogram.types import BotCommand
 import asyncio
-from aiogram import Bot, Dispatcher, types
 import logging
-from dotenv import load_dotenv
-from os import getenv
 from hendlers import (
     stat_router,
     echo_router,
@@ -14,7 +11,7 @@ from hendlers import (
     car_router
 )
 from db.queries import init_db, create_tables, populate_tables
-
+from bot import bot, dp
 
 async def on_startup(dispatcher):
     init_db()
@@ -22,19 +19,14 @@ async def on_startup(dispatcher):
     populate_tables()
 
 
-load_dotenv()
-bot = Bot(token=getenv('BOT_TOKEN'))
-dp = Dispatcher()
-
-
 async def main():
     await bot.set_my_commands([
         BotCommand(command='start', description='Старт'),
-        BotCommand(command='picture', description='Случайная кртинка'),
+        BotCommand(command='picture', description='Случайная картинка'),
         BotCommand(command='myinfo', description='Информация об о мне'),
         BotCommand(command='shop', description='Магазин'),
         BotCommand(command='quest', description='Опрос'),
-        BotCommand(command='get', description='машины')
+        BotCommand(command='cars', description='Цены на машины')
     ])
     dp.include_router(car_router)
     dp.include_router(questions_router)

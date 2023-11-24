@@ -30,6 +30,7 @@ async def start_quest(message: types.Message, state: FSMContext):
 
 @questions_router.message(F.text, Questionaire.name)
 async def process_name(message: types.Message, state: FSMContext):
+    await state.update_data(name=message.text)
     await state.set_state(Questionaire.age)
     await message.answer('Ваш возраст: ')
 
@@ -52,11 +53,13 @@ async def process_age(message: types.Message, state: FSMContext):
 @questions_router.message(F.text, Questionaire.gender)
 async def process_gender(message: types.Message, state: FSMContext):
     await state.set_state(Questionaire.avtor)
+    await state.update_data(gender=message.text)
     await message.answer('Ваш любимый автор: ')
 
 
 @questions_router.message(F.text, Questionaire.avtor)
 async def process_books(message: types.Message, state: FSMContext):
+    await state.update_data(avtor=message.text)
     await state.set_state(Questionaire.books)
     await message.answer('Сколько вы прочитали книг?:')
 

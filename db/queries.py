@@ -21,30 +21,59 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             price DESIMAL,
-            image TEXT   
+            image TEXT,
+            id_marka INTEGER,
+            FOREIGN KEY (id_marka) REFERENCES marka (id) 
         )
         '''
     )
     db.commit()
 
+    cursor.execute('''DROP TABLE IF EXISTS marka''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS marka (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT
+        )
+    ''')
+
 
 def populate_tables():
+    cursor.execute(''' 
+        INSERT INTO marka (name) VALUES 
+        ('Tayota'),
+        ('Nissan'),
+        ('Lexus')
+    ''')
     cursor.execute(
         '''
-        INSERT INTO products (name, price, image) VALUES 
-        ('Тайота Супра МК-4 белый', 20000, 'image/supra_white.jpg'),
-        ('Тайота Супра МК-4 черный', 23000, 'image/supra_black.jpg'),
-        ('Тайота Супра МК-4 красный', 29000, 'image/supra_red.jpg')
+        INSERT INTO products (name, price, image, id_marka) VALUES 
+        ('Супра МК-4 белый', 20000, 'image/supra_white.jpg', 1),
+        ('Супра МК-4 черный', 23000, 'image/supra_black.jpg', 1),
+        ('Супра МК-4 красный', 29000, 'image/supra_red.jpg', 1),
+        ('Nissan GRT 35', 30000, 'image/nissan_gtr_1.jpg', 2),
+        ('Nissan GRT 34', 20000, 'image/nissan_gtr_2.jpg', 2),
+        ('Lexus lx-570', 53988, 'image/lexus_570.jpg', 3 ),
+        ('Lexus lx-600', 86900, 'image/lexus_600.jpg', 3 )
         '''
 
     )
     db.commit()
 
 
-def get_products():
+def get_products(id_n):
     cursor.execute(
         '''
-        SELECT * FROM products
+        SELECT * FROM products WHERE id_marka = :id_n
+        ''',{'id_n':id_n}
+    )
+    return cursor.fetchall()
+
+
+def get_marka():
+    cursor.execute(
+        '''
+        SELECT * FROM marka
         '''
     )
     return cursor.fetchall()
