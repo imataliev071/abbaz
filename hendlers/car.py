@@ -28,22 +28,27 @@ async def get(message: types.Message):
     await message.answer('Выберите марку', reply_markup=kb_marka)
 
 
-kb_bay = types.InlineKeyboardMarkup(
-    inline_keyboard=[
-        [
-            types.InlineKeyboardButton(
-                text='Купить',
-            ),
-        ]
-    ]
-)
-
-
 @car_router.callback_query(F.data.startswith('marka '))
 async def get_cars(call: types.CallbackQuery):
     id = call.data.replace('marka ', '')
     for car in queries.get_products(int(id)):
+        kb_buy = types.InlineKeyboardMarkup(
+            inline_keyboard=[
+                [
+                    types.InlineKeyboardButton(
+                        text='Купить', callback_data=f"buy{car[0]}"
+                    ),
+                ]
+            ]
+        )
         file = types.FSInputFile(car[3])
-        await bot.send_photo(reply_markup=kb_bay, chat_id=call.message.chat.id, photo=file,
+        await bot.send_photo(reply_markup=kb_buy, chat_id=call.message.chat.id, photo=file,
                              caption=(f'Марка: {car[1]} \n \n '
                                       f'Цена: {car[2]}'))
+
+
+@car_router.callback_query(F.data.startswith('buy'))
+async def get_cars(call: types.CallbackQuery):
+    id_car = int(call.data.replace('buy', ''))
+    save_bay_cars(call.message.from_user.id, id_car)
+    await bot.send_message(chat_id=call.message.chat.id, text="мы приняли ваш заказ")

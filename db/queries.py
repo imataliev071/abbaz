@@ -16,7 +16,7 @@ def create_tables():
         '''
     )
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Order (
+    CREATE TABLE IF NOT EXISTS 'Order' (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         id_user INT,
         id_products INT
@@ -86,13 +86,12 @@ def get_marka():
     return cursor.fetchall()
 
 
-def save_bay_cars(data_bay_cars):
+def save_bay_cars(customer, data_bay_cars):
     print(data_bay_cars)
     cursor.execute('''
-    INSERT INTO Order (id_user, id_products) VALUES 
+    INSERT INTO 'Order' (id_user, id_products) VALUES 
     (:id_user, :id_products)
-    ''', data_bay_cars
-                   )
+    ''', {'id_user': customer, 'id_products': data_bay_cars})
     db.commit()
 
 
