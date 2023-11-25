@@ -15,6 +15,13 @@ def create_tables():
         DROP TABLE IF EXISTS products
         '''
     )
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Order (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_user INT,
+        id_products INT
+    )
+    ''')
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS products (
@@ -65,7 +72,7 @@ def get_products(id_n):
     cursor.execute(
         '''
         SELECT * FROM products WHERE id_marka = :id_n
-        ''',{'id_n':id_n}
+        ''', {'id_n': id_n}
     )
     return cursor.fetchall()
 
@@ -77,6 +84,16 @@ def get_marka():
         '''
     )
     return cursor.fetchall()
+
+
+def save_bay_cars(data_bay_cars):
+    print(data_bay_cars)
+    cursor.execute('''
+    INSERT INTO Order (id_user, id_products) VALUES 
+    (:id_user, :id_products)
+    ''', data_bay_cars
+                   )
+    db.commit()
 
 
 if __name__ == '__main__':
