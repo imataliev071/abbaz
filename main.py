@@ -25,7 +25,7 @@ async def main():
         BotCommand(command='picture', description='Случайная картинка'),
         BotCommand(command='myinfo', description='Информация об о мне'),
         BotCommand(command='shop', description='Магазин'),
-        BotCommand(command='quest', description='Опрос'),
+        BotCommand(command='questions', description='Опрос'),
         BotCommand(command='cars', description='Цены на машины')
     ])
     dp.include_router(car_router)

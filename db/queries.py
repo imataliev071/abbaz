@@ -16,6 +16,22 @@ def create_tables():
         '''
     )
     cursor.execute('''
+    CREATE TABLE IF NOT EXISTS quest (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        age TEXT,
+        car_marka TEXT,
+        bm TEXT,
+        how_cars TEXT
+    )
+    ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS subscribe (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_user
+    )
+    ''')
+    cursor.execute('''
     CREATE TABLE IF NOT EXISTS 'Order' (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         id_user INT,
@@ -75,6 +91,24 @@ def get_products(id_n):
         ''', {'id_n': id_n}
     )
     return cursor.fetchall()
+
+
+def save_questions(data_quest):
+    print(data_quest)
+    cursor.execute('''
+        INSERT INTO quest (name, age, car_marka, bm, how_cars) VALUES 
+        (:name, :age, :car_marka, :bm, :how_cars)
+    ''', data_quest)
+    db.commit()
+
+
+def save_subscribe(data_subscribe):
+    print(data_subscribe)
+    cursor.execute('''
+    INSERT INTO subscribe (id_user) VALUES 
+    (:id_user)
+    ''', {'id_user': data_subscribe})
+    db.commit()
 
 
 def get_marka():

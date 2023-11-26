@@ -2,6 +2,7 @@ from aiogram import Router, F, types
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from db.queries import save_questions
 
 questions_router = Router()
 
@@ -9,9 +10,9 @@ questions_router = Router()
 class Questionaire(StatesGroup):
     name = State()
     age = State()
-    gender = State()
-    avtor = State()
-    books = State()
+    car_marka = State()
+    bm = State()
+    how_cars = State()
 
 
 @questions_router.message(Command('stop'))
@@ -21,7 +22,7 @@ async def stop_question(message: types.Message, state: FSMContext):
     await message.answer('Опрос прерван')
 
 
-@questions_router.message(Command('quest'))
+@questions_router.message(Command('questions'))
 async def start_quest(message: types.Message, state: FSMContext):
     await state.set_state(Questionaire.name)
     await message.answer('Введите "stop" для выхода')
@@ -45,30 +46,31 @@ async def process_age(message: types.Message, state: FSMContext):
         await message.answer("Возраст должен быть от 12 до 100")
     else:
         await state.update_data(age=int(age))
-        await state.set_state(Questionaire.gender)
-        await message.answer('Ваш пол')
-        await message.answer('Например: М, Ж')
+        await state.update_data(car_marka=message.text)
+        await state.set_state(Questionaire.car_marka)
+        await message.answer('Ваша любимая марка?')
 
 
-@questions_router.message(F.text, Questionaire.gender)
-async def process_gender(message: types.Message, state: FSMContext):
-    await state.set_state(Questionaire.avtor)
-    await state.update_data(gender=message.text)
-    await message.answer('Ваш любимый автор: ')
+@questions_router.message(F.text, Questionaire.car_marka)
+async def process_bm(message: types.Message, state: FSMContext):
+    await state.set_state(Questionaire.bm)
+    await state.update_data(bm=message.text)
+    await message.answer('Объем мотора Mersedes s600? ')
 
 
-@questions_router.message(F.text, Questionaire.avtor)
-async def process_books(message: types.Message, state: FSMContext):
-    await state.update_data(avtor=message.text)
-    await state.set_state(Questionaire.books)
-    await message.answer('Сколько вы прочитали книг?:')
+@questions_router.message(F.text, Questionaire.bm)
+async def process_how_cars(message: types.Message, state: FSMContext):
+    await state.set_state(Questionaire.how_cars)
+    await state.update_data(how_cars=message.text)
+    await message.answer('Какая у вас машина?')
 
 
-@questions_router.message(F.text, Questionaire.books)
-async def process_books(message: types.Message, state: FSMContext):
-    await state.update_data(books=message.text)
+@questions_router.message(F.text, Questionaire.how_cars)
+async def process_how_cars(message: types.Message, state: FSMContext):
+    await state.update_data(how_cars=message.text)
 
-    data = await state.get_data()
-    print(data)
+    data_quest = await state.get_data()
+    save_questions(data_quest)
+    print(data_quest)
     await state.clear()
     await message.answer('Спасибо большое, вы прошли опрос')

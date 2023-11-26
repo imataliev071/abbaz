@@ -1,13 +1,14 @@
 from aiogram import Router, F, types
 from aiogram.filters import Command
+from bot import bot
+from db.queries import save_subscribe
 
 stat_router = Router()
 
 
-@stat_router.message(Command('start'))  # фильтр
+@stat_router.message(Command('start'))
 async def start(message: types.Message):
-    # await message.reply('hello')
-    kb = types.InlineKeyboardMarkup(
+    kb_start = types.InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 types.InlineKeyboardButton(
@@ -20,13 +21,23 @@ async def start(message: types.Message):
                 ),
                 types.InlineKeyboardButton(
                     text='Магазин', url='https://www.ebay.com/'
+                ),
+                types.InlineKeyboardButton(
+                    text='Подписаться', callback_data='subscirbe_button'
                 )
             ]
         ]
     )
-    await message.answer(f'Здравствуйте {message.from_user.first_name}',
-                         reply_markup=kb,
-                         )
+    await message.answer(
+        f'Здравствуйте {message.from_user.first_name}',
+        reply_markup=kb_start,
+    )
+
+
+@stat_router.callback_query(F.data.startswith('subscribe'))
+async def get_cars(call: types.CallbackQuery):
+    save_subscribe(call.message.from_user.id)
+    await bot.send_message(chat_id=call.message.chat.id, text="Вы подписаны")
 
 
 @stat_router.callback_query(F.data == 'about')
