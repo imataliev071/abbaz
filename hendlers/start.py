@@ -22,8 +22,10 @@ async def start(message: types.Message):
                 types.InlineKeyboardButton(
                     text='Магазин', url='https://www.ebay.com/'
                 ),
+            ],
+            [
                 types.InlineKeyboardButton(
-                    text='Подписаться', callback_data='subscirbe_button'
+                    text='Подписаться', callback_data='subscribe'
                 )
             ]
         ]
@@ -36,7 +38,7 @@ async def start(message: types.Message):
 
 @stat_router.callback_query(F.data.startswith('subscribe'))
 async def get_cars(call: types.CallbackQuery):
-    save_subscribe(call.message.from_user.id)
+    save_subscribe(call.message.chat.id)
     await bot.send_message(chat_id=call.message.chat.id, text="Вы подписаны")
 
 

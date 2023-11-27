@@ -8,10 +8,12 @@ from hendlers import (
     picture_router,
     shop_router,
     questions_router,
-    car_router
+    car_router,
+    delayed_answer_router
 )
 from db.queries import init_db, create_tables, populate_tables
-from bot import bot, dp
+from bot import bot, dp, scheduler
+
 
 async def on_startup(dispatcher):
     init_db()
@@ -26,7 +28,8 @@ async def main():
         BotCommand(command='myinfo', description='Информация об о мне'),
         BotCommand(command='shop', description='Магазин'),
         BotCommand(command='questions', description='Опрос'),
-        BotCommand(command='cars', description='Цены на машины')
+        BotCommand(command='cars', description='Цены на машины'),
+        BotCommand(command='remind', description='Напоминание 2024 года')
     ])
     dp.include_router(car_router)
     dp.include_router(questions_router)
@@ -34,8 +37,13 @@ async def main():
     dp.include_router(shop_router)
     dp.include_router(myinfo_ruter)
     dp.include_router(picture_router)
+    dp.include_router(delayed_answer_router)
+
     dp.startup.register(on_startup)
+
     dp.include_router(echo_router)
+    # запуск планировщика
+    scheduler.start()
     await dp.start_polling(bot)
 
 

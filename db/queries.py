@@ -102,6 +102,12 @@ def save_questions(data_quest):
     db.commit()
 
 
+def receiving_user_id():
+    cursor.execute('''
+    SELECT id_user FROM subscribe
+    ''')
+
+
 def save_subscribe(data_subscribe):
     print(data_subscribe)
     cursor.execute('''
