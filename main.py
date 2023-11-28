@@ -1,6 +1,7 @@
 from aiogram.types import BotCommand
 import asyncio
 import logging
+from hendlers.delayed_answer import remind
 from hendlers import (
     stat_router,
     echo_router,
@@ -19,6 +20,7 @@ async def on_startup(dispatcher):
     init_db()
     create_tables()
     populate_tables()
+    await remind()
 
 
 async def main():

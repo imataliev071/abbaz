@@ -106,6 +106,7 @@ def receiving_user_id():
     cursor.execute('''
     SELECT id_user FROM subscribe
     ''')
+    return cursor.fetchall()
 
 
 def save_subscribe(data_subscribe):
