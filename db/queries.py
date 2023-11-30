@@ -10,11 +10,17 @@ def init_db():
 
 
 def create_tables():
-    cursor.execute(
-        '''
-        DROP TABLE IF EXISTS products
-        '''
+    cursor.execute('''DROP TABLE IF EXISTS all_cars''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS all_cars (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    descr TEXT,
+    price INT,
+    url TEXT,
+    img TEXT
     )
+    ''')
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS quest (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,6 +44,7 @@ def create_tables():
         id_products INT
     )
     ''')
+    cursor.execute('''DROP TABLE IF EXISTS products''')
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS products (
@@ -109,6 +116,18 @@ def receiving_user_id():
     return cursor.fetchall()
 
 
+def save_all_cars(title, descr, price, url, img):
+    cursor.execute('''
+    INSERT INTO all_cars (title, descr, price, url, img) VALUES
+    (:title, :descr, :price, :url, :img)
+    ''', {'title': title},
+                   {'descr': descr},
+                   {'price': price},
+                   {'url': url},
+                   {'img': img}
+                   )
+
+
 def save_subscribe(data_subscribe):
     print(data_subscribe)
     cursor.execute('''
@@ -140,5 +159,5 @@ if __name__ == '__main__':
     init_db()
     create_tables()
     populate_tables()
-    get_products()
-    pprint(get_products())
+    # get_products()
+    # pprint(get_products())
