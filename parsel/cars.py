@@ -45,8 +45,8 @@ def main():
 
         descr = clear_text(item.css('.catalog-item-descr::text').get())
         price = clear_text(item.css('.catalog-item-price::text').get())
-        url = item.css('::attr(href)').get()
-        # print(f'{MAIN_URL}{url}')
+        url0 = item.css('::attr(href)').get()
+        url = (f'{MAIN_URL}{url0}')
         img = clear_text(item.css('.catalog-item-cover img::attr(src)').get())
         # print(img)
         save_all_cars(title, descr, price, url, img)
@@ -55,4 +55,3 @@ def main():
 if __name__ == "__main__":
     queries.init_db()
     main()
-

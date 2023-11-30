@@ -117,15 +117,20 @@ def receiving_user_id():
 
 
 def save_all_cars(title, descr, price, url, img):
+    data = {
+        'title': title,
+        'descr': descr,
+        'price': price,
+        'url': url,
+        'img': img
+    }
+
     cursor.execute('''
     INSERT INTO all_cars (title, descr, price, url, img) VALUES
     (:title, :descr, :price, :url, :img)
-    ''', {'title': title},
-                   {'descr': descr},
-                   {'price': price},
-                   {'url': url},
-                   {'img': img}
-                   )
+    ''', data)
+
+    db.commit()
 
 
 def save_subscribe(data_subscribe):
@@ -159,5 +164,5 @@ if __name__ == '__main__':
     init_db()
     create_tables()
     populate_tables()
-    # get_products()
-    # pprint(get_products())
+    get_products()
+    pprint(get_products())
