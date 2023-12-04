@@ -4,7 +4,7 @@ from bot import bot
 from pprint import pprint
 
 group_messages_router = Router()
-BAD_WORDS = ('fff', 'g')
+BAD_WORDS = ('fff', 'g', 's')
 
 
 # @group_messages_router.message(F.from_user.id == 123456789)
