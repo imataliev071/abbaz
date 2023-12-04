@@ -10,7 +10,7 @@ from hendlers import (
     shop_router,
     questions_router,
     car_router,
-    delayed_answer_router
+    group_messages_router
 )
 from db.queries import init_db, create_tables, populate_tables
 from bot import bot, dp, scheduler
@@ -31,7 +31,6 @@ async def main():
         BotCommand(command='shop', description='Магазин'),
         BotCommand(command='questions', description='Опрос'),
         BotCommand(command='cars', description='Цены на машины'),
-        BotCommand(command='remind', description='Напоминание 2024 года')
     ])
     dp.include_router(car_router)
     dp.include_router(questions_router)
@@ -39,7 +38,7 @@ async def main():
     dp.include_router(shop_router)
     dp.include_router(myinfo_ruter)
     dp.include_router(picture_router)
-    dp.include_router(delayed_answer_router)
+    dp.include_router(group_messages_router)
 
     dp.startup.register(on_startup)
 
